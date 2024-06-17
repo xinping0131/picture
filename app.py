@@ -100,7 +100,7 @@ if uploaded_file is not None:
     image = enhancer.enhance(contrast)
     
     # 分割线
-    st.markdown('<div class="divider"> magic...</div>', unsafe_allow_html=True)
+    st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
 
     # 显示修改后的图片和标题
     st.markdown(
