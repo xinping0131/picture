@@ -5,7 +5,7 @@ import io
 import base64
 
 # 设置页面配置
-st.set_page_config(page_title="Picture Magic House!", page_icon="https://images.app.goo.gl/BwFXpE3WqCRXLPcD9", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Picture Magic House!", page_icon="400x.jpg", initial_sidebar_state="collapsed")
 
 # 设置网页背景颜色
 page_bg_css = """
