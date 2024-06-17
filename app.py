@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 
 # 设置页面配置
-st.set_page_config(page_title="圖片處理應用", page_icon="🖼️", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="pisture change!", page_icon="🖼️", initial_sidebar_state="collapsed")
 
 # 设置网页背景颜色
 page_bg_css = """
@@ -16,9 +16,9 @@ page_bg_css = """
 """
 st.markdown(page_bg_css, unsafe_allow_html=True)
 
-st.title("圖片處理應用")
+st.title("pisture change!")
 
-uploaded_file = st.file_uploader("上傳一張圖片", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("請上傳一張圖片", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
@@ -26,9 +26,9 @@ if uploaded_file is not None:
 
     # 調色功能
     st.sidebar.header("調色選項")
-    brightness = st.sidebar.slider("亮度", 0.0, 2.0, 1.0)
-    contrast = st.sidebar.slider("對比度", 0.0, 2.0, 1.0)
-    saturation = st.sidebar.slider("飽和度", 0.0, 2.0, 1.0)
+    brightness = st.sidebar.slider("亮度", 0.0, 2.0, 0.0)
+    contrast = st.sidebar.slider("對比度", 0.0, 2.0, 0.0)
+    saturation = st.sidebar.slider("飽和度", 0.0, 2.0, 0.0)
 
     enhancer = ImageEnhance.Brightness(image)
     image_enhanced = enhancer.enhance(brightness)
