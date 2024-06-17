@@ -28,7 +28,6 @@ page_bg_css = """
 
 .image-title {
     font-weight: bold;
-    color: purple;
 }
 
 .divider {
@@ -50,7 +49,8 @@ page_bg_css = """
 
 st.markdown(page_bg_css, unsafe_allow_html=True)
 
-st.title("Picture Magic House!")
+st.title('<span style="color: purple;">Picture Magic House!</span>', unsafe_allow_html=True)
+
 
 def image_to_base64(image: Image) -> str:
     buffered = io.BytesIO()
