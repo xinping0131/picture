@@ -29,18 +29,6 @@ page_bg_css = """
     width: 100%;
     border-top: 2px solid #bbb;
     margin: 20px 0;
-    position: relative; /* 相對定位，用於添加絕對定位的文字 */
-}
-
-.divider-text {
-    position: absolute; /* 絕對定位 */
-    top: -16px; /* 文字的上邊距 */
-    left: 50%; /* 文字水平置中 */
-    transform: translateX(-50%); /* 水平居中 */
-    background-color: #e0f7fa; /* 背景色與應用程式背景色相同 */
-    padding: 0 10px; /* 文字的左右內邊距 */
-    font-weight: bold; /* 字體加粗 */
-    font-size: 16px; /* 字體大小 */
 }
 </style>
 """
@@ -114,7 +102,7 @@ if uploaded_file is not None:
     
     # 分割线
     st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
-    st.markdown('<div class="divider-text">MAGIC</div>', unsafe_allow_html=True)
+  
     
     # 显示修改后的图片和标题
     st.markdown(
