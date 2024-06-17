@@ -10,9 +10,15 @@ st.set_page_config(page_title="Picture Magic House!", page_icon="✨", initial_s
 # 设置网页背景颜色
 page_bg_css = """
 <style>
-[data-testid="stAppViewContainer"] {
-    background-color: #e0f7fa; /* 設置背景顏色 */
-    padding: 20px; /* 頁面內邊距 */
+.animated-background {
+    background-image: url('animated-stars.gif');
+    background-size: cover;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }
 
 .image-container {
