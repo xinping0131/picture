@@ -1,6 +1,5 @@
 import streamlit as st
 from PIL import Image, ImageEnhance, ImageOps, ImageFilter
-import numpy as np
 import io
 import base64
 
@@ -87,7 +86,7 @@ def main():
             st.sidebar.write("订阅用户可无限次使用图片调整功能。")
             st.session_state.subscribed = True
         else:
-            st.sidebar.write(f"非订阅用户只能使用 {session_limit} 次图片调整功能。")
+            st.sidebar.write(f"非订阅用户只能上传 {session_limit} 次图片。")
             st.session_state.subscribed = False
 
         if st.sidebar.button("登出"):
@@ -99,6 +98,7 @@ def main():
             uploaded_file = st.file_uploader("请上传一张图片^^", type=["jpg", "jpeg", "png"])
 
             if uploaded_file is not None:
+                st.session_state.usage_count += 1
                 image = Image.open(uploaded_file)
                 
                 # 显示原始图片和标题
@@ -165,10 +165,6 @@ def main():
                     """, unsafe_allow_html=True
                 )
 
-                # 计数调整次数
-                if not st.session_state.subscribed:
-                    st.session_state.usage_count += 1
-
                 # 下载处理后的图片
                 st.sidebar.header("下载图片")
                 if st.sidebar.button("下载"):
@@ -180,11 +176,19 @@ def main():
                             file_name="processed_image.png",
                             mime="image/png"
                         )
-        else:
-            st.error("您已达到非订阅用户的使用限制次数，请订阅以继续使用。")
+            else:
+                if not st.session_state.subscribed and st.session_state.usage_count >= session_limit:
+                    st.error("您已达到非订阅用户的使用限制次数，请订阅以继续使用。")
     else:
         st.title("欢迎来到 Picture Magic House!")
         login()
+
+    # 将登出按钮移到侧边栏最下方
+    st.sidebar.markdown('<div style="position: fixed; bottom: 10px; width: 100%;">', unsafe_allow_html=True)
+    if st.sidebar.button("登出"):
+        st.session_state.logged_in = False
+        st.experimental_rerun()
+    st.sidebar.markdown('</div>', unsafe_allow_html=True)
 
 def app():
     if 'logged_in' not in st.session_state:
