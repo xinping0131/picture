@@ -1,5 +1,5 @@
 import streamlit as st
-from PIL import Image, ImageEnhance
+from PIL import Image, ImageEnhance, ImageOps, ImageFilter
 import numpy as np
 import cv2
 import io
@@ -17,7 +17,7 @@ page_bg_css = """
 .image-container {
     display: inline-block;
     margin: 10px;
-    text-align: center;
+    text-align: left;
 }
 .image-container img {
     width: 300px;
@@ -57,40 +57,39 @@ if uploaded_file is not None:
         """, unsafe_allow_html=True
     )
 
-    # 调色功能
+    # 裁切功能
+    st.sidebar.header("裁切選項")
+    crop_box = st.sidebar.checkbox("裁切圖片")
+    if crop_box:
+        crop_area = st.sidebar.rect_area("選擇裁切區域", value=(0, 0, image.width, image.height))
+        image = image.crop(crop_area)
+
+    # 模糊功能
+    st.sidebar.header("模糊選項")
+    blur_radius = st.sidebar.slider("模糊半徑", 0, 10, 0)
+    if blur_radius > 0:
+        image = image.filter(ImageFilter.GaussianBlur(blur_radius))
+
+    # 調色功能
     st.sidebar.header("調色選項")
     brightness = st.sidebar.slider("亮度", 0.0, 2.0, 1.0)
     contrast = st.sidebar.slider("對比度", 0.0, 2.0, 1.0)
     saturation = st.sidebar.slider("飽和度", 0.0, 2.0, 1.0)
+    color_mode = st.sidebar.selectbox("色彩模式", ["原始", "紅藍黑白"])
 
-    enhancer = ImageEnhance.Brightness(image)
-    image_enhanced = enhancer.enhance(brightness)
+    if color_mode == "紅藍黑白":
+        image = ImageOps.grayscale(image)
+        enhancer = ImageEnhance.Color(image)
+        image = enhancer.enhance(0.0)
+    else:
+        enhancer = ImageEnhance.Brightness(image)
+        image = enhancer.enhance(brightness)
 
-    enhancer = ImageEnhance.Contrast(image_enhanced)
-    image_enhanced = enhancer.enhance(contrast)
+        enhancer = ImageEnhance.Contrast(image)
+        image = enhancer.enhance(contrast)
 
-    enhancer = ImageEnhance.Color(image_enhanced)
-    image_enhanced = enhancer.enhance(saturation)
-
-    # 去除背景功能
-    st.sidebar.header("背景選項")
-    remove_bg = st.sidebar.checkbox("去除背景")
-
-    if remove_bg:
-        image_np = np.array(image_enhanced)
-        image_rgb = cv2.cvtColor(image_np, cv2.COLOR_RGBA2RGB)
-        mask = np.zeros(image_rgb.shape[:2], np.uint8)
-
-        bgd_model = np.zeros((1, 65), np.float64)
-        fgd_model = np.zeros((1, 65), np.float64)
-
-        rect = (10, 10, image_rgb.shape[1] - 10, image_rgb.shape[0] - 10)
-        cv2.grabCut(image_rgb, mask, rect, bgd_model, fgd_model, 5, cv2.GC_INIT_WITH_RECT)
-
-        mask2 = np.where((mask == 2) | (mask == 0), 0, 1).astype('uint8')
-        image_rgb_nobg = image_rgb * mask2[:, :, np.newaxis]
-
-        image_enhanced = Image.fromarray(image_rgb_nobg)
+        enhancer = ImageEnhance.Color(image)
+        image = enhancer.enhance(saturation)
 
     # 分割线
     st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
@@ -100,7 +99,7 @@ if uploaded_file is not None:
         f"""
         <div class="image-container">
             <div class="image-title">修改後</div>
-            <img src="data:image/png;base64,{image_to_base64(image_enhanced)}" alt="修改後">
+            <img src="data:image/png;base64,{image_to_base64(image)}" alt="修改後">
         </div>
         """, unsafe_allow_html=True
     )
@@ -108,7 +107,7 @@ if uploaded_file is not None:
     # 下載處理後的圖片
     st.sidebar.header("下載處理後的圖片")
     if st.sidebar.button("下載"):
-        image_enhanced.save("processed_image.png")
+        image.save("processed_image.png")
         with open("processed_image.png", "rb") as file:
             btn = st.sidebar.download_button(
                 label="下載圖片",
