@@ -16,7 +16,9 @@ def image_to_base64(image: Image) -> str:
     image.save(buffered, format="PNG")
     return base64.b64encode(buffered.getvalue()).decode()
     
-# 设置网页背景颜色
+
+
+# 设置网页背景颜色和样式
 page_bg_css = """
 <style>
 [data-testid="stAppViewContainer"] {
@@ -93,11 +95,28 @@ def subscription():
     else:
         st.error("用户不存在")
 
+    st.sidebar.markdown("---")
+    st.sidebar.title("会员订阅")
+    subscribe_option = st.sidebar.selectbox("选择订阅选项", ["未订阅（每月$3）", "已订阅（无限次使用）"])
+
+    if subscribe_option == "未订阅（每月$3）":
+        st.sidebar.write("请订阅以解锁无限次使用功能。")
+    else:
+        st.sidebar.write("订阅后可无限次使用。")
+
+    return subscribe_option
+
 # 刷卡按钮（模拟支付）
 def payment():
     st.title("刷卡")
     if st.button("刷卡（$3）"):
         st.success("支付成功！")
+
+# 图片转换为Base64格式
+def image_to_base64(image: Image) -> str:
+    buffered = io.BytesIO()
+    image.save(buffered, format="PNG")
+    return base64.b64encode(buffered.getvalue()).decode()
 
 # 主程序
 def main():
@@ -124,6 +143,19 @@ def main():
             # 图片调整功能（显示在左侧）
             st.sidebar.title("图片调整选项")
             
+            # 获取订阅选项
+            subscribe_option = subscription()
+            
+            # 检查是否已经订阅
+            if "未订阅" in subscribe_option:
+                usage_limit = 3
+                usage_count = user_db[st.session_state.username]["usage_count"]
+                if usage_count >= usage_limit:
+                    st.warning(f"您已使用了{usage_limit}次调整功能，需订阅后继续使用。")
+                    st.stop()
+                else:
+                    user_db[st.session_state.username]["usage_count"] += 1
+
             # 裁切功能
             st.sidebar.header("裁切选项")
             crop_left = st.sidebar.slider("左边", 0, image.width, 0)
@@ -187,12 +219,6 @@ def main():
                         file_name="processed_image.png",
                         mime="image/png"
                     )
-            
-            # 显示会员订阅信息
-            st.sidebar.markdown("---")
-            st.sidebar.title("会员订阅")
-            if st.sidebar.button("订阅信息"):
-                subscription()
 
             # 显示刷卡按钮
             st.sidebar.markdown("---")
@@ -207,11 +233,4 @@ def main():
         st.sidebar.markdown("---")
         st.sidebar.title("登出")
         if st.sidebar.button("登出"):
-            st.session_state.logged_in = False
-            st.success("您已成功登出！")
-
-    else:
-        login()
-
-if __name__ == "__main__":
-    main()
+           
