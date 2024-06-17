@@ -3,6 +3,7 @@ from PIL import Image, ImageEnhance
 import numpy as np
 import cv2
 import io
+import base64
 
 # 设置页面配置
 st.set_page_config(page_title="Picture Change!", page_icon="🖼️", initial_sidebar_state="collapsed")
@@ -32,7 +33,12 @@ st.markdown(page_bg_css, unsafe_allow_html=True)
 
 st.title("Picture Change!")
 
-uploaded_file = st.file_uploader("請上傳一張圖片", type=["jpg", "jpeg", "png"])
+def image_to_base64(image: Image) -> str:
+    buffered = io.BytesIO()
+    image.save(buffered, format="PNG")
+    return base64.b64encode(buffered.getvalue()).decode()
+
+uploaded_file = st.file_uploader("上傳一張圖片", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
@@ -86,14 +92,14 @@ if uploaded_file is not None:
     st.markdown(
         f"""
         <div class="image-container">
-            <div class="image-title">修改後~</div>
-            <img src="data:image/png;base64,{image_to_base64(image_enhanced)}" alt="修改後~">
+            <div class="image-title">修改後</div>
+            <img src="data:image/png;base64,{image_to_base64(image_enhanced)}" alt="修改後!">
         </div>
         """, unsafe_allow_html=True
     )
 
     # 下載處理後的圖片
-    st.sidebar.header("下載圖片")
+    st.sidebar.header("下載處理後的圖片")
     if st.sidebar.button("下載"):
         image_enhanced.save("processed_image.png")
         with open("processed_image.png", "rb") as file:
@@ -103,8 +109,3 @@ if uploaded_file is not None:
                 file_name="processed_image.png",
                 mime="image/png"
             )
-
-def image_to_base64(image: Image) -> str:
-    buffered = io.BytesIO()
-    image.save(buffered, format="PNG")
-    return base64.b64encode(buffered.getvalue()).decode()
