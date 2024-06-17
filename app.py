@@ -34,7 +34,7 @@ page_bg_css = """
 """
 st.markdown(page_bg_css, unsafe_allow_html=True)
 
-st.title("圖片處理應用")
+st.title("Picture Magic House!")
 
 def image_to_base64(image: Image) -> str:
     buffered = io.BytesIO()
