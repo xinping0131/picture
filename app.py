@@ -1,11 +1,11 @@
 import streamlit as st
-from PIL import Image, ImageEnhance, ImageOps
+from PIL import Image, ImageEnhance, ImageOps, ImageFilter
 import numpy as np
 import io
 import base64
 
 # 设置页面配置
-st.set_page_config(page_title="圖片處理應用", page_icon="🖼️", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Picture Magic House!", page_icon="🖼️", initial_sidebar_state="collapsed")
 
 # 设置网页背景颜色
 page_bg_css = """
@@ -19,7 +19,7 @@ page_bg_css = """
     text-align: left;
 }
 .image-container img {
-    width: 300px;
+    max-width: 400px;
     height: auto;
 }
 .image-title {
@@ -41,7 +41,7 @@ def image_to_base64(image: Image) -> str:
     image.save(buffered, format="PNG")
     return base64.b64encode(buffered.getvalue()).decode()
 
-uploaded_file = st.file_uploader("上傳一張圖片", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("請上傳一張圖片^^", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
@@ -50,8 +50,8 @@ if uploaded_file is not None:
     st.markdown(
         f"""
         <div class="image-container">
-            <div class="image-title">原始圖片</div>
-            <img src="data:image/png;base64,{image_to_base64(image)}" alt="原始圖片">
+            <div class="image-title">原始圖片🖼️</div>
+            <img src="data:image/png;base64,{image_to_base64(image)}" alt="原始圖片🖼️">
         </div>
         """, unsafe_allow_html=True
     )
@@ -60,9 +60,18 @@ if uploaded_file is not None:
     st.sidebar.header("裁切選項")
     crop_box = st.sidebar.checkbox("裁切圖片")
     if crop_box:
-        crop_left = st.sidebar.slider("裁切左邊", 0, image.width, 0)
-        crop_right = st.sidebar.slider("裁切右邊", 0, image.width, image.width)
-        image = image.crop((crop_left, 0, crop_right, image.height))
+        crop_left = st.sidebar.slider("左邊", 0, image.width, 0)
+        crop_right = st.sidebar.slider("右邊", 0, image.width, image.width)
+        crop_top = st.sidebar.slider("上方", 0, image.height, 0)
+        crop_bottom = st.sidebar.slider("下部", 0, image.height, image.height)
+        image = image.crop((crop_left, crop_top, crop_right, crop_bottom))
+
+    # 模糊功能
+    st.sidebar.header("模糊選項")
+    blur_box = st.sidebar.checkbox("模糊圖片")
+    if blur_box:
+        blur_radius = st.sidebar.slider("模糊程度", 0, 10, 2)
+        image = image.filter(ImageFilter.GaussianBlur(blur_radius))
 
     # 調整功能
     st.sidebar.header("調整選項")
@@ -97,15 +106,15 @@ if uploaded_file is not None:
     st.markdown(
         f"""
         <div class="image-container">
-            <div class="image-title">修改後</div>
-            <img src="data:image/png;base64,{image_to_base64(image)}" alt="修改後">
+            <div class="image-title">修改後~</div>
+            <img src="data:image/png;base64,{image_to_base64(image)}" alt="修改後~">
         </div>
         """, unsafe_allow_html=True
     )
 
     # 下載處理後的圖片
-    st.sidebar.header("下載處理後的圖片")
-    if st.sidebar.button("下載"):
+    st.sidebar.header("下載圖片")
+    if st.sidebar.button("Dowload..."):
         image.save("processed_image.png")
         with open("processed_image.png", "rb") as file:
             btn = st.sidebar.download_button(
