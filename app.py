@@ -2,9 +2,10 @@ import streamlit as st
 from PIL import Image, ImageEnhance
 import numpy as np
 import cv2
+import io
 
 # 设置页面配置
-st.set_page_config(page_title="pisture change!", page_icon="🖼️", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Picture Change!", page_icon="🖼️", initial_sidebar_state="collapsed")
 
 # 设置网页背景颜色
 page_bg_css = """
@@ -12,23 +13,45 @@ page_bg_css = """
 [data-testid="stAppViewContainer"] {
     background-color: #e0f7fa;
 }
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+.image-title {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 5px;
+    font-weight: bold;
+    z-index: 1;
+}
 </style>
 """
 st.markdown(page_bg_css, unsafe_allow_html=True)
 
-st.title("pisture change!")
+st.title("Picture Change!")
 
 uploaded_file = st.file_uploader("請上傳一張圖片", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
-    st.image(image, caption="原始圖片", use_column_width=True)
+    
+    # 显示原始图片和标题
+    st.markdown(
+        f"""
+        <div class="image-container">
+            <div class="image-title">原始圖片</div>
+            <img src="data:image/png;base64,{image_to_base64(image)}" alt="原始圖片">
+        </div>
+        """, unsafe_allow_html=True
+    )
 
-    # 調色功能
+    # 调色功能
     st.sidebar.header("調色選項")
-    brightness = st.sidebar.slider("亮度", 0.0, 2.0, 0.0)
-    contrast = st.sidebar.slider("對比度", 0.0, 2.0, 0.0)
-    saturation = st.sidebar.slider("飽和度", 0.0, 2.0, 0.0)
+    brightness = st.sidebar.slider("亮度", 0.0, 2.0, 1.0)
+    contrast = st.sidebar.slider("對比度", 0.0, 2.0, 1.0)
+    saturation = st.sidebar.slider("飽和度", 0.0, 2.0, 1.0)
 
     enhancer = ImageEnhance.Brightness(image)
     image_enhanced = enhancer.enhance(brightness)
@@ -59,10 +82,18 @@ if uploaded_file is not None:
 
         image_enhanced = Image.fromarray(image_rgb_nobg)
 
-    st.image(image_enhanced, caption="修改後", use_column_width=True)
+    # 显示修改后的图片和标题
+    st.markdown(
+        f"""
+        <div class="image-container">
+            <div class="image-title">修改後~</div>
+            <img src="data:image/png;base64,{image_to_base64(image_enhanced)}" alt="修改後~">
+        </div>
+        """, unsafe_allow_html=True
+    )
 
     # 下載處理後的圖片
-    st.sidebar.header("下載處理後的圖片")
+    st.sidebar.header("下載圖片")
     if st.sidebar.button("下載"):
         image_enhanced.save("processed_image.png")
         with open("processed_image.png", "rb") as file:
@@ -72,3 +103,8 @@ if uploaded_file is not None:
                 file_name="processed_image.png",
                 mime="image/png"
             )
+
+def image_to_base64(image: Image) -> str:
+    buffered = io.BytesIO()
+    image.save(buffered, format="PNG")
+    return base64.b64encode(buffered.getvalue()).decode()
