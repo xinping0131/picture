@@ -11,24 +11,42 @@ st.set_page_config(page_title="Picture Magic House!", page_icon="🖼️", initi
 page_bg_css = """
 <style>
 [data-testid="stAppViewContainer"] {
-    background-color: #e0f7fa;
+    background-color: #e0f7fa; /* 設置背景顏色 */
+    background-image: url("400x.jpg"); /* 背景圖片的路徑，可選 */
+    background-size: cover; /* 背景圖片大小設置 */
+    background-repeat: no-repeat; /* 背景圖片不重複 */
+    background-position: center center; /* 背景圖片置中 */
+    padding: 20px; /* 頁面內邊距 */
 }
+
 .image-container {
     display: inline-block;
     margin: 10px;
     text-align: left;
 }
+
 .image-container img {
     max-width: 400px;
     height: auto;
 }
+
 .image-title {
     font-weight: bold;
 }
+
 .divider {
     width: 100%;
     border-top: 2px solid #bbb;
     margin: 20px 0;
+}
+
+.divider-text {
+    text-align: center; /* 文字置中 */
+    background-color: #ffffff; /* 文字背景色 */
+    padding: 0 10px; /* 文字的左右內邊距 */
+    font-weight: bold; /* 字體加粗 */
+    font-size: 20px; /* 字體大小 */
+    margin-top: -18px; /* 調整文字位置 */
 }
 </style>
 """
