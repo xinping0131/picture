@@ -4,7 +4,10 @@ import io
 import base64
 
 # 模拟帐户数据库
-user_db = {}
+user_db = {
+    "user1": "password1",  # 示例用户名和密码，实际应用中应从数据库或其他安全存储中获取
+    "user2": "password2"
+}
 
 # 主要应用程序入口
 def app():
@@ -74,22 +77,6 @@ def show_login_page():
             show_main_page()  # 登录成功后直接跳转到主页面
         else:
             st.error("帳戶名稱或密碼不正確！")
-
-    st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
-
-    st.header("註冊新帳號")
-    new_username = st.text_input("請輸入新帳戶名稱")
-    new_password = st.text_input("請輸入新密碼", type="password")
-
-    if st.button("註冊"):
-        if new_username in user_db:
-            st.error("帳戶名稱已存在，請選擇其他名稱！")
-        else:
-            user_db[new_username] = new_password
-            st.success("註冊成功！請登入。")
-            st.session_state.logged_in = True  # 注册成功后直接登录
-            st.session_state.username = new_username
-            show_main_page()  # 注册成功后直接跳转到主页面
 
 def show_main_page():
     st.title("Picture Magic House!🎩")
