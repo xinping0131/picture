@@ -49,8 +49,8 @@ page_bg_css = """
 
 st.markdown(page_bg_css, unsafe_allow_html=True)
 
-#st.title("Picture Magic House!")
-st.title('<img src="pic.png" width="30" height="30" style="vertical-align: middle;"> Picture Magic House!', unsafe_allow_html=True)
+st.title("Picture Magic House!🎩")
+
 
 def image_to_base64(image: Image) -> str:
     buffered = io.BytesIO()
