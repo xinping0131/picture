@@ -74,7 +74,7 @@ if uploaded_file is not None:
     )
     
     # 裁切功能
-    st.sidebar.markdown('<span style="font-size: 40px; font-weight: bold; color: yellow;">Tools</span>', unsafe_allow_html=True)
+    st.sidebar.markdown('<span style="font-size: 40px; font-weight: bold; color: purple;">Tools</span>', unsafe_allow_html=True)
     st.sidebar.header("裁切選項")
     crop_box = st.sidebar.checkbox("裁切圖片")
     if crop_box:
