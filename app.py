@@ -11,7 +11,7 @@ st.set_page_config(page_title="Picture Magic House!", page_icon="✨", initial_s
 page_bg_css = """
 <style>
 .animated-background {
-    background-image: url('7dd3e3d4b62a458a3b57afa68599d48f.gif');
+    background-image: url('vbMG0A.gif');
     background-size: cover;
     position: fixed;
     left: 0;
