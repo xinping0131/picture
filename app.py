@@ -12,7 +12,7 @@ page_bg_css = """
 <style>
 [data-testid="stAppViewContainer"] {
     background-color: #e0f7fa; /* 設置背景顏色 */
-    padding: 20px; /* 頁面內邊距 */
+    padding: 10px; /* 頁面內邊距 */
 }
 
 .image-container {
