@@ -3,6 +3,9 @@ from PIL import Image, ImageEnhance
 import numpy as np
 import cv2
 
+# 设置页面配置
+st.set_page_config(page_title="圖片處理應用", page_icon="🖼️", initial_sidebar_state="collapsed")
+
 # 设置网页背景颜色
 page_bg_css = """
 <style>
@@ -13,11 +16,9 @@ page_bg_css = """
 """
 st.markdown(page_bg_css, unsafe_allow_html=True)
 
-st.set_page_config(page_title="美圖中心", page_icon="🖼️", initial_sidebar_state="collapsed")
+st.title("圖片處理應用")
 
-st.title("美圖中心")
-
-uploaded_file = st.file_uploader("請上傳一張圖片", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("上傳一張圖片", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
