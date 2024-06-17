@@ -6,7 +6,10 @@ import base64
 
 # 设置页面配置
 st.set_page_config(page_title="Picture Magic House!", page_icon="✨", initial_sidebar_state="collapsed")
-
+def image_to_base64(image: Image) -> str:
+    buffered = io.BytesIO()
+    image.save(buffered, format="PNG")
+    return base64.b64encode(buffered.getvalue()).decode()
 # 设置网页背景颜色
 page_bg_css = """
 <style>
