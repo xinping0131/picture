@@ -12,14 +12,12 @@ page_bg_css = """
 <style>
 [data-testid="stAppViewContainer"] {
     background-color: #e0f7fa; /* 設置背景顏色 */
-    background-image: url('400x.jpg'); /* 设置背景图片 */
-    background-size: cover; /* 背景图片大小适应 */
     padding: 20px; /* 頁面內邊距 */
 }
 
 .image-container {
     display: inline-block;
-    margin: 10px;
+    margin: 18px;
     text-align: left;
 }
 
@@ -30,6 +28,7 @@ page_bg_css = """
 
 .image-title {
     font-weight: bold;
+    color: purple;
 }
 
 .divider {
