@@ -79,7 +79,8 @@ def main():
 
         subscription_status = st.sidebar.selectbox(
             "请选择订阅状态",
-            ["未订阅", "订阅"]
+            ["未订阅", "订阅"],
+            key="subscription_status"
         )
 
         if subscription_status == "订阅":
@@ -89,7 +90,7 @@ def main():
             st.sidebar.write(f"非订阅用户只能上传 {session_limit} 次图片。")
             st.session_state.subscribed = False
 
-        if st.sidebar.button("登出"):
+        if st.sidebar.button("登出", key="logout_button_top"):
             st.session_state.logged_in = False
             st.experimental_rerun()
 
@@ -115,23 +116,23 @@ def main():
                 st.sidebar.markdown('<span style="font-size: 35px; font-weight: bold; color: purple;">📌Tools</span>', unsafe_allow_html=True)
                 st.sidebar.header("裁切选项")
                 
-                crop_left = st.sidebar.slider("左边", 0, image.width, 0)
-                crop_right = st.sidebar.slider("右边", 0, image.width, image.width)
-                crop_top = st.sidebar.slider("上方", 0, image.height, 0)
-                crop_bottom = st.sidebar.slider("下方", 0, image.height, image.height)
+                crop_left = st.sidebar.slider("左边", 0, image.width, 0, key="crop_left")
+                crop_right = st.sidebar.slider("右边", 0, image.width, image.width, key="crop_right")
+                crop_top = st.sidebar.slider("上方", 0, image.height, 0, key="crop_top")
+                crop_bottom = st.sidebar.slider("下方", 0, image.height, image.height, key="crop_bottom")
                 image = image.crop((crop_left, crop_top, crop_right, crop_bottom))
 
                 # 模糊功能
                 st.sidebar.header("模糊选项")
-                blur_radius = st.sidebar.slider("模糊程度", 0, 10, 2)
+                blur_radius = st.sidebar.slider("模糊程度", 0, 10, 2, key="blur_radius")
                 image = image.filter(ImageFilter.GaussianBlur(blur_radius))
 
                 # 调整功能
                 st.sidebar.header("调整选项")
-                color_mode = st.sidebar.selectbox("色调模式", ["原始", "红色调", "蓝色调", "黑白色调"])
-                brightness = st.sidebar.slider("亮度", 0.0, 2.0, 1.0)
-                contrast = st.sidebar.slider("对比度", 0.0, 2.0, 1.0)
-                saturation = st.sidebar.slider("饱和度", 0.0, 2.0, 1.0)
+                color_mode = st.sidebar.selectbox("色调模式", ["原始", "红色调", "蓝色调", "黑白色调"], key="color_mode")
+                brightness = st.sidebar.slider("亮度", 0.0, 2.0, 1.0, key="brightness")
+                contrast = st.sidebar.slider("对比度", 0.0, 2.0, 1.0, key="contrast")
+                saturation = st.sidebar.slider("饱和度", 0.0, 2.0, 1.0, key="saturation")
 
                 if color_mode == "红色调":
                     r, g, b = image.split()
@@ -167,14 +168,15 @@ def main():
 
                 # 下载处理后的图片
                 st.sidebar.header("下载图片")
-                if st.sidebar.button("下载"):
+                if st.sidebar.button("下载", key="download_button"):
                     image.save("processed_image.png")
                     with open("processed_image.png", "rb") as file:
-                        btn = st.sidebar.download_button(
+                        st.sidebar.download_button(
                             label="下载图片",
                             data=file,
                             file_name="processed_image.png",
-                            mime="image/png"
+                            mime="image/png",
+                            key="download_image"
                         )
             else:
                 if not st.session_state.subscribed and st.session_state.usage_count >= session_limit:
@@ -185,7 +187,7 @@ def main():
 
     # 将登出按钮移到侧边栏最下方
     st.sidebar.markdown('<div style="position: fixed; bottom: 10px; width: 100%;">', unsafe_allow_html=True)
-    if st.sidebar.button("登出"):
+    if st.sidebar.button("登出", key="logout_button_bottom"):
         st.session_state.logged_in = False
         st.experimental_rerun()
     st.sidebar.markdown('</div>', unsafe_allow_html=True)
