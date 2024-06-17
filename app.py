@@ -3,10 +3,10 @@ from PIL import Image, ImageEnhance, ImageOps, ImageFilter
 import io
 import base64
 
-# 模擬帳戶資料庫
+# 模拟帐户数据库
 user_db = {}
 
-# 主要應用程式入口
+# 主要应用程序入口
 def app():
     # 设置页面配置
     st.set_page_config(page_title="Picture Magic House!", page_icon="✨", initial_sidebar_state="collapsed")
@@ -71,7 +71,7 @@ def show_login_page():
             st.session_state.logged_in = True
             st.success("登入成功！")
             st.session_state.username = username
-            show_main_page()
+            show_main_page()  # 登录成功后直接跳转到主页面
         else:
             st.error("帳戶名稱或密碼不正確！")
 
@@ -87,6 +87,9 @@ def show_login_page():
         else:
             user_db[new_username] = new_password
             st.success("註冊成功！請登入。")
+            st.session_state.logged_in = True  # 注册成功后直接登录
+            st.session_state.username = new_username
+            show_main_page()  # 注册成功后直接跳转到主页面
 
 def show_main_page():
     st.title("Picture Magic House!🎩")
