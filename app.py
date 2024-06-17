@@ -6,7 +6,7 @@ import io
 import base64
 
 # 设置页面配置
-st.set_page_config(page_title="Picture Change!", page_icon="🖼️", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="圖片處理應用", page_icon="🖼️", initial_sidebar_state="collapsed")
 
 # 设置网页背景颜色
 page_bg_css = """
@@ -15,23 +15,27 @@ page_bg_css = """
     background-color: #e0f7fa;
 }
 .image-container {
-    position: relative;
     display: inline-block;
+    margin: 10px;
+    text-align: center;
+}
+.image-container img {
+    width: 300px;
+    height: auto;
 }
 .image-title {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background-color: rgba(255, 255, 255, 0.7);
-    padding: 5px;
     font-weight: bold;
-    z-index: 1;
+}
+.divider {
+    width: 100%;
+    border-top: 2px solid #bbb;
+    margin: 20px 0;
 }
 </style>
 """
 st.markdown(page_bg_css, unsafe_allow_html=True)
 
-st.title("Picture Change!")
+st.title("圖片處理應用")
 
 def image_to_base64(image: Image) -> str:
     buffered = io.BytesIO()
@@ -88,12 +92,15 @@ if uploaded_file is not None:
 
         image_enhanced = Image.fromarray(image_rgb_nobg)
 
+    # 分割线
+    st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+
     # 显示修改后的图片和标题
     st.markdown(
         f"""
         <div class="image-container">
             <div class="image-title">修改後</div>
-            <img src="data:image/png;base64,{image_to_base64(image_enhanced)}" alt="修改後!">
+            <img src="data:image/png;base64,{image_to_base64(image_enhanced)}" alt="修改後">
         </div>
         """, unsafe_allow_html=True
     )
