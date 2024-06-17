@@ -12,10 +12,6 @@ page_bg_css = """
 <style>
 [data-testid="stAppViewContainer"] {
     background-color: #e0f7fa; /* 設置背景顏色 */
-    background-image: url("full.jpeg"); /* 背景圖片的路徑，可選 */
-    background-size: cover; /* 背景圖片大小設置 */
-    background-repeat: no-repeat; /* 背景圖片不重複 */
-    background-position: center center; /* 背景圖片置中 */
     padding: 20px; /* 頁面內邊距 */
 }
 
