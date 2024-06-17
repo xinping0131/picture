@@ -13,24 +13,6 @@ if uploaded_file is not None:
     image = Image.open(uploaded_file)
     st.image(image, caption="上傳的圖片", use_column_width=True)
 
-    # 去除背景功能
-    if st.checkbox("去除背景"):
-        image_np = np.array(image)
-        image_rgb = cv2.cvtColor(image_np, cv2.COLOR_RGBA2RGB)
-        mask = np.zeros(image_rgb.shape[:2], np.uint8)
-
-        bgd_model = np.zeros((1, 65), np.float64)
-        fgd_model = np.zeros((1, 65), np.float64)
-
-        rect = (10, 10, image_rgb.shape[1] - 10, image_rgb.shape[0] - 10)
-        cv2.grabCut(image_rgb, mask, rect, bgd_model, fgd_model, 5, cv2.GC_INIT_WITH_RECT)
-
-        mask2 = np.where((mask == 2) | (mask == 0), 0, 1).astype('uint8')
-        image_rgb_nobg = image_rgb * mask2[:, :, np.newaxis]
-
-        image_nobg = Image.fromarray(image_rgb_nobg)
-        st.image(image_nobg, caption="去除背景後的圖片", use_column_width=True)
-
     # 調色功能
     st.sidebar.header("調色選項")
     brightness = st.sidebar.slider("亮度", 0.0, 2.0, 1.0)
@@ -47,6 +29,29 @@ if uploaded_file is not None:
     image_enhanced = enhancer.enhance(saturation)
 
     st.image(image_enhanced, caption="調色後的圖片", use_column_width=True)
+
+    # 去除背景功能
+    st.sidebar.header("背景選項")
+    remove_bg = st.sidebar.checkbox("去除背景")
+    
+    if remove_bg:
+        image_np = np.array(image)
+        image_rgb = cv2.cvtColor(image_np, cv2.COLOR_RGBA2RGB)
+        mask = np.zeros(image_rgb.shape[:2], np.uint8)
+
+        bgd_model = np.zeros((1, 65), np.float64)
+        fgd_model = np.zeros((1, 65), np.float64)
+
+        rect = (10, 10, image_rgb.shape[1] - 10, image_rgb.shape[0] - 10)
+        cv2.grabCut(image_rgb, mask, rect, bgd_model, fgd_model, 5, cv2.GC_INIT_WITH_RECT)
+
+        mask2 = np.where((mask == 2) | (mask == 0), 0, 1).astype('uint8')
+        image_rgb_nobg = image_rgb * mask2[:, :, np.newaxis]
+
+        image_nobg = Image.fromarray(image_rgb_nobg)
+        st.image(image_nobg, caption="去除背景後的圖片", use_column_width=True)
+    else:
+        st.image(image, caption="原始圖片", use_column_width=True)
 
     # 下載處理後的圖片
     st.sidebar.header("下載處理後的圖片")
