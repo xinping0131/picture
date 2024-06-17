@@ -1,15 +1,14 @@
 import streamlit as st
 from PIL import Image, ImageEnhance, ImageOps, ImageFilter
+import numpy as np
 import io
 import base64
 
-# 模拟帐户数据库
+# 模擬帳戶資料庫
 user_db = {
-    "user1": {"password": "password1", "subscribed": False}
+    "app": "123",  # 示例帳戶
+    "user2": "password2"   # 示例帳戶
 }
-
-# 设置页面配置
-st.set_page_config(page_title="Picture Magic House!", page_icon="✨", initial_sidebar_state="collapsed")
 
 # 會員訂閱價格
 subscription_price = 3  # 美元每月
@@ -173,7 +172,8 @@ def main():
             st.sidebar.subheader("下載圖片")
             if st.sidebar.button("下載圖片"):
                 image.save("processed_image.png")
-                with open("processed_image.png", "rb") as file:
+                with open("processed_image.png", "rb") as file
+:
                     btn = st.sidebar.download_button(
                         label="下載圖片",
                         data=file,
