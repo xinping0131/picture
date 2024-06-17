@@ -73,9 +73,9 @@ def login():
                 st.error("帳號名稱與密碼不正确！")
 
 def main():
-    st.sidebar.title("用户設定")
+    st.sidebar.title("用户狀態")
     if st.session_state.logged_in:
-        st.sidebar.write(f"欢迎, {st.session_state.username}!")
+        st.sidebar.write(f"歡迎, {st.session_state.username}~")
 
         subscription_status = st.sidebar.selectbox(
             "訂閱狀況",
