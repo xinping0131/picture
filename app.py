@@ -163,7 +163,7 @@ def main():
                 )
 
                 # 下載處理後的圖片
-              st.sidebar.header("下載圖片")
+                st.sidebar.header("下載圖片")
                 img_buffer = io.BytesIO()
                 image.save(img_buffer, format="PNG")
                 img_buffer.seek(0)
