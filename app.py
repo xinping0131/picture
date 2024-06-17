@@ -137,9 +137,18 @@ def main():
         if option == "註冊":
             st.header("註冊新帳號")
             register()
+            if st.session_state.logged_in:  # 如果註冊成功且已登入，直接顯示主畫面
+                st.title("Picture Magic House!🎩")
+                uploaded_file = st.file_uploader("請上傳一張圖片^^", type=["jpg", "jpeg", "png"])
+                # 略去後續圖片處理的代碼，這裡假設註冊成功後直接進入主畫面
+
         else:
             st.header("登入")
             login()
+            if st.session_state.logged_in:  # 如果登入成功，直接顯示主畫面
+                st.title("Picture Magic House!🎩")
+                uploaded_file = st.file_uploader("請上傳一張圖片^^", type=["jpg", "jpeg", "png"])
+                # 略去後續圖片處理的代碼，這裡假設登入成功後直接進入主畫面
 
 # 主要應用程式入口
 def app():
