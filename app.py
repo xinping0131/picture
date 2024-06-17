@@ -41,7 +41,7 @@ def image_to_base64(image: Image) -> str:
     image.save(buffered, format="PNG")
     return base64.b64encode(buffered.getvalue()).decode()
 
-uploaded_file = st.file_uploader(page_title="請上傳一張圖片^^", type=["jpg", "jpeg", "png"])
+uploaded_file = st.file_uploader("請上傳一張圖片^^", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
@@ -100,7 +100,7 @@ if uploaded_file is not None:
     image = enhancer.enhance(contrast)
     
     # 分割线
-    st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
+    st.markdown('<div class="divider">MAGIC.oO</div>', unsafe_allow_html=True)
 
     # 显示修改后的图片和标题
     st.markdown(
