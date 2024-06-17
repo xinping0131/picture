@@ -172,8 +172,7 @@ def main():
             st.sidebar.subheader("下載圖片")
             if st.sidebar.button("下載圖片"):
                 image.save("processed_image.png")
-                with open("processed_image.png", "rb") as file
-:
+                with open("processed_image.png", "rb") as file:
                     btn = st.sidebar.download_button(
                         label="下載圖片",
                         data=file,
