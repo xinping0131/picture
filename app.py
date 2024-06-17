@@ -12,7 +12,9 @@ page_bg_css = """
 <style>
 [data-testid="stAppViewContainer"] {
     background-color: #e0f7fa; /* 設置背景顏色 */
-    padding: 10px; /* 頁面內邊距 */
+    background-image: url('400x.jpg'); /* 设置背景图片 */
+    background-size: cover; /* 背景图片大小适应 */
+    padding: 20px; /* 頁面內邊距 */
 }
 
 .image-container {
@@ -70,7 +72,8 @@ if uploaded_file is not None:
         </div>
         """, unsafe_allow_html=True
     )
-
+    # 显示标题 "Magic"
+    st.markdown('<div class="divider-text">Magic</div>', unsafe_allow_html=True)
     # 裁切功能
     st.sidebar.header("裁切選項")
     crop_box = st.sidebar.checkbox("裁切圖片")
