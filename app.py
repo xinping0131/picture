@@ -1,5 +1,5 @@
 import streamlit as st
-from PIL import Image, ImageEnhance, ImageOps, ImageFilter
+from PIL import Image, ImageEnhance, ImageOps
 import numpy as np
 import io
 import base64
@@ -60,24 +60,35 @@ if uploaded_file is not None:
     st.sidebar.header("裁切選項")
     crop_box = st.sidebar.checkbox("裁切圖片")
     if crop_box:
-        crop_width = st.sidebar.slider("裁切寬度", 0, image.width, image.width)
-        crop_height = st.sidebar.slider("裁切高度", 0, image.height, image.height)
-        image = image.crop((0, 0, crop_width, crop_height))
+        crop_left = st.sidebar.slider("裁切左邊", 0, image.width, 0)
+        crop_right = st.sidebar.slider("裁切右邊", 0, image.width, image.width)
+        image = image.crop((crop_left, 0, crop_right, image.height))
 
-    # 調色功能
-    st.sidebar.header("調色選項")
+    # 調整功能
+    st.sidebar.header("調整選項")
     color_mode = st.sidebar.selectbox("色調模式", ["原始", "紅色調", "藍色調", "黑白色調"])
+    brightness = st.sidebar.slider("亮度", 0.0, 2.0, 1.0)
+    contrast = st.sidebar.slider("對比度", 0.0, 2.0, 1.0)
+    saturation = st.sidebar.slider("飽和度", 0.0, 2.0, 1.0)
 
     if color_mode == "紅色調":
         r, g, b = image.split()
         red_image = Image.merge("RGB", (r, Image.new("L", r.size, 0), Image.new("L", r.size, 0)))
-        image = ImageEnhance.Color(red_image).enhance(2.0)
+        enhancer = ImageEnhance.Color(red_image)
+        image = enhancer.enhance(saturation)
     elif color_mode == "藍色調":
         r, g, b = image.split()
         blue_image = Image.merge("RGB", (Image.new("L", r.size, 0), Image.new("L", r.size, 0), b))
-        image = ImageEnhance.Color(blue_image).enhance(2.0)
+        enhancer = ImageEnhance.Color(blue_image)
+        image = enhancer.enhance(saturation)
     elif color_mode == "黑白色調":
         image = ImageOps.grayscale(image)
+
+    enhancer = ImageEnhance.Brightness(image)
+    image = enhancer.enhance(brightness)
+
+    enhancer = ImageEnhance.Contrast(image)
+    image = enhancer.enhance(contrast)
     
     # 分割线
     st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
