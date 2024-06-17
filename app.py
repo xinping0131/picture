@@ -119,6 +119,11 @@ def main():
                 crop_right = st.sidebar.slider("右邊", 0, image.width, image.width, key="crop_right")
                 crop_top = st.sidebar.slider("上方", 0, image.height, 0, key="crop_top")
                 crop_bottom = st.sidebar.slider("下方", 0, image.height, image.height, key="crop_bottom")
+
+                # 確保裁剪座標是有效的
+                crop_left, crop_right = min(crop_left, crop_right), max(crop_left, crop_right)
+                crop_top, crop_bottom = min(crop_top, crop_bottom), max(crop_top, crop_bottom)
+
                 image = image.crop((crop_left, crop_top, crop_right, crop_bottom))
 
                 # 模糊功能
