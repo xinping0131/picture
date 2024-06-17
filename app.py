@@ -77,13 +77,12 @@ if uploaded_file is not None:
     # 裁切功能
     st.sidebar.markdown('<span style="font-size: 35px; font-weight: bold; color: purple;">📌Tools</span>', unsafe_allow_html=True)
     st.sidebar.header("裁切選項")
-    crop_box = st.sidebar.checkbox("裁切圖片")
-    if crop_box:
-        crop_left = st.sidebar.slider("左邊", 0, image.width, 0)
-        crop_right = st.sidebar.slider("右邊", 0, image.width, image.width)
-        crop_top = st.sidebar.slider("上方", 0, image.height, 0)
-        crop_bottom = st.sidebar.slider("下方", 0, image.height, image.height)
-        image = image.crop((crop_left, crop_top, crop_right, crop_bottom))
+    
+    crop_left = st.sidebar.slider("左邊", 0, image.width, 0)
+    crop_right = st.sidebar.slider("右邊", 0, image.width, image.width)
+    crop_top = st.sidebar.slider("上方", 0, image.height, 0)
+    crop_bottom = st.sidebar.slider("下方", 0, image.height, image.height)
+    image = image.crop((crop_left, crop_top, crop_right, crop_bottom))
 
     # 模糊功能
     st.sidebar.header("模糊選項")
