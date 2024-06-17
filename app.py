@@ -1,8 +1,11 @@
-import streamlit as st
-from PIL import Image, ImageEnhance, ImageOps, ImageFilter
 import io
 import base64
+from PIL import Image
 
+def image_to_base64(image: Image) -> str:
+    buffered = io.BytesIO()
+    image.save(buffered, format="PNG")
+    return base64.b64encode(buffered.getvalue()).decode()
 # 模拟帐户数据库
 user_db = {
     "user1": "password1",  # 示例用户名和密码，实际应用中应从数据库或其他安全存储中获取
