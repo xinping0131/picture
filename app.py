@@ -90,7 +90,7 @@ def main():
             st.sidebar.write(f"非訂閱用户只能上傳 {session_limit} 次圖片進行使用喔。")
             st.session_state.subscribed = False
 
-        if st.session_state.subscribed or st.session_state.usage_count < session_limit:
+        if (st.session_state.subscribed=True) or (st.session_state.usage_count < session_limit):
             st.title("Picture Magic House!🎩")
             uploaded_file = st.file_uploader("請上傳一張圖片^^", type=["jpg", "jpeg", "png"])
 
