@@ -72,10 +72,11 @@ if uploaded_file is not None:
         </div>
         """, unsafe_allow_html=True
     )
-    # 显示标题 "Magic"
-    st.markdown('<div class="divider-text">Magic</div>', unsafe_allow_html=True)
+    
     # 裁切功能
+    st.sidebar.header("Tools.")
     st.sidebar.header("裁切選項")
+    
     crop_box = st.sidebar.checkbox("裁切圖片")
     if crop_box:
         crop_left = st.sidebar.slider("左邊", 0, image.width, 0)
