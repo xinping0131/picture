@@ -163,17 +163,17 @@ def main():
                 )
 
                 # 下載處理後的圖片
-                st.sidebar.header("下載圖片")
-                if st.sidebar.button("下載", key="download_button"):
-                    image.save("processed_image.png")
-                    with open("processed_image.png", "rb") as file:
-                        st.sidebar.download_button(
-                            label="下載圖片",
-                            data=file,
-                            file_name="processed_image.png",
-                            mime="image/png",
-                            key="download_image"
-                        )
+              st.sidebar.header("下載圖片")
+                img_buffer = io.BytesIO()
+                image.save(img_buffer, format="PNG")
+                img_buffer.seek(0)
+                st.sidebar.download_button(
+                    label="Download...",
+                    data=img_buffer,
+                    file_name="processed_image.png",
+                    mime="image/png"
+                )
+                        
             else:
                 if not st.session_state.subscribed and st.session_state.usage_count >= session_limit:
                     st.error("您已達到非訂閱用戶的使用限制次數，請訂閱以繼續使用，謝謝。")
