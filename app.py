@@ -86,10 +86,8 @@ if uploaded_file is not None:
 
     # 模糊功能
     st.sidebar.header("模糊選項")
-    blur_box = st.sidebar.checkbox("模糊圖片")
-    if blur_box:
-        blur_radius = st.sidebar.slider("模糊程度", 0, 10, 2)
-        image = image.filter(ImageFilter.GaussianBlur(blur_radius))
+    blur_radius = st.sidebar.slider("模糊程度", 0, 10, 2)
+    image = image.filter(ImageFilter.GaussianBlur(blur_radius))
 
     # 調整功能
     st.sidebar.header("調整選項")
