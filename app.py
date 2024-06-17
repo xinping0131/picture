@@ -3,15 +3,25 @@ from PIL import Image, ImageEnhance
 import numpy as np
 import cv2
 
-st.set_page_config(page_title="圖片處理應用", page_icon="🖼️", initial_sidebar_state="collapsed")
+# 设置网页背景颜色
+page_bg_css = """
+<style>
+[data-testid="stAppViewContainer"] {
+    background-color: #e0f7fa;
+}
+</style>
+"""
+st.markdown(page_bg_css, unsafe_allow_html=True)
 
-st.title("圖片處理應用")
+st.set_page_config(page_title="美圖中心", page_icon="🖼️", initial_sidebar_state="collapsed")
 
-uploaded_file = st.file_uploader("上傳一張圖片", type=["jpg", "jpeg", "png"])
+st.title("美圖中心")
+
+uploaded_file = st.file_uploader("請上傳一張圖片", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
-    st.image(image, caption="上傳的圖片", use_column_width=True)
+    st.image(image, caption="原始圖片", use_column_width=True)
 
     # 調色功能
     st.sidebar.header("調色選項")
@@ -28,14 +38,12 @@ if uploaded_file is not None:
     enhancer = ImageEnhance.Color(image_enhanced)
     image_enhanced = enhancer.enhance(saturation)
 
-    st.image(image_enhanced, caption="調色後的圖片", use_column_width=True)
-
     # 去除背景功能
     st.sidebar.header("背景選項")
     remove_bg = st.sidebar.checkbox("去除背景")
-    
+
     if remove_bg:
-        image_np = np.array(image)
+        image_np = np.array(image_enhanced)
         image_rgb = cv2.cvtColor(image_np, cv2.COLOR_RGBA2RGB)
         mask = np.zeros(image_rgb.shape[:2], np.uint8)
 
@@ -48,10 +56,9 @@ if uploaded_file is not None:
         mask2 = np.where((mask == 2) | (mask == 0), 0, 1).astype('uint8')
         image_rgb_nobg = image_rgb * mask2[:, :, np.newaxis]
 
-        image_nobg = Image.fromarray(image_rgb_nobg)
-        st.image(image_nobg, caption="去除背景後的圖片", use_column_width=True)
-    else:
-        st.image(image, caption="原始圖片", use_column_width=True)
+        image_enhanced = Image.fromarray(image_rgb_nobg)
+
+    st.image(image_enhanced, caption="修改後", use_column_width=True)
 
     # 下載處理後的圖片
     st.sidebar.header("下載處理後的圖片")
