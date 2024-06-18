@@ -126,6 +126,11 @@ def main():
 
                 image = image.crop((crop_left, crop_top, crop_right, crop_bottom))
 
+                 # 旋轉功能
+                st.sidebar.header("旋轉功能")
+                rotate_angle = st.sidebar.slider("旋轉角度", -180, 180, 0, key="rotate_angle")
+                image = image.rotate(rotate_angle, expand=True)
+
                 # 模糊功能
                 st.sidebar.header("模糊功能")
                 blur_radius = st.sidebar.slider("模糊程度", 0, 10, 2, key="blur_radius")
