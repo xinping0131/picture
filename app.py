@@ -128,8 +128,10 @@ def main():
 
                # 鏡像翻轉功能
                 st.sidebar.header("翻轉功能")
-                flip_option = st.sidebar.radio("翻轉方向", ["水平翻轉", "垂直翻轉"], index=0, key="flip_option")
-                if flip_option == "水平翻轉":
+                flip_option = st.sidebar.radio("翻轉方向", ["原始","水平翻轉", "垂直翻轉"], index=0, key="flip_option")
+                if flip_option == "原始":
+                     image = image
+                elif flip_option == "水平翻轉":
                     image = image.transpose(Image.FLIP_LEFT_RIGHT)
                 elif flip_option == "垂直翻轉":
                     image = image.transpose(Image.FLIP_TOP_BOTTOM)
