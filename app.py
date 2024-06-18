@@ -75,7 +75,7 @@ def login():
 def main():
     st.sidebar.title("用戶狀態")
     if st.session_state.logged_in:
-        st.sidebar.write(f"歡迎, {st.session_state.username}~")
+        st.sidebar.write(f"Welcome , {st.session_state.username}~")
 
         subscription_status = st.sidebar.selectbox(
             "訂閱狀況",
@@ -87,7 +87,7 @@ def main():
             st.sidebar.write("訂閱用戶可無限次使用本系統~")
             st.session_state.subscribed = True
         else:
-            st.sidebar.write(f"非訂閱用戶只能上傳 {session_limit} 次圖片進行使用喔。")
+            st.sidebar.write(f"非訂閱用戶只能使用 {session_limit} 次圖片調整功能喔。")
             st.session_state.subscribed = False
 
         st.title("Picture Magic House!🎩")
