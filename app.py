@@ -135,6 +135,9 @@ def main():
                     image = image.transpose(Image.FLIP_LEFT_RIGHT)
                 elif flip_option == "垂直翻轉":
                     image = image.transpose(Image.FLIP_TOP_BOTTOM)
+                elif flip_option == "垂直翻轉" and lip_option == "水平翻轉":
+                    image = image.transpose(Image.FLIP_TOP_BOTTOM)
+                    image = image.transpose(Image.FLIP_LEFT_RIGHT)
 
                 # 模糊功能
                 st.sidebar.header("模糊功能")
