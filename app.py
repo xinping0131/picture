@@ -87,7 +87,7 @@ def main():
             st.sidebar.write("訂閱用戶可無限次使用本系統~")
             st.session_state.subscribed = True
         else:
-            st.sidebar.write(f"非訂閱用戶只能使用 {session_limit} 次圖片調整功能喔。")
+            st.sidebar.write(f"非訂閱用戶只能使用 {session_limit} 次圖片調整功能喔~")
             st.session_state.subscribed = False
 
         st.title("Picture Magic House!🎩")
@@ -112,7 +112,7 @@ def main():
 
             if st.session_state.subscribed or st.session_state.usage_count < session_limit:
                 # 裁切功能
-                st.sidebar.markdown('<span style="font-size: 35px; font-weight: bold; color: purple;">📌工具</span>', unsafe_allow_html=True)
+                st.sidebar.markdown('<span style="font-size: 35px; font-weight: bold; color: purple;">📌Tools</span>', unsafe_allow_html=True)
                 st.sidebar.header("裁切功能")
 
                 crop_left = st.sidebar.slider("左邊", 0, image.width, 0, key="crop_left")
@@ -135,9 +135,6 @@ def main():
                     image = image.transpose(Image.FLIP_LEFT_RIGHT)
                 elif flip_option == "垂直翻轉":
                     image = image.transpose(Image.FLIP_TOP_BOTTOM)
-                elif flip_option == "垂直翻轉" and lip_option == "水平翻轉":
-                    image = image.transpose(Image.FLIP_TOP_BOTTOM)
-                    image = image.transpose(Image.FLIP_LEFT_RIGHT)
 
                 # 模糊功能
                 st.sidebar.header("模糊功能")
@@ -145,7 +142,7 @@ def main():
                 image = image.filter(ImageFilter.GaussianBlur(blur_radius))
 
                 #濾鏡功能
-                st.sidebar.header("濾鏡")
+                st.sidebar.header("濾鏡功能")
                 filter_options = {
                     "原始": None,
                     "模糊濾鏡": ImageFilter.BLUR,
