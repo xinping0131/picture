@@ -131,6 +131,25 @@ def main():
                 blur_radius = st.sidebar.slider("模糊程度", 0, 10, 2, key="blur_radius")
                 image = image.filter(ImageFilter.GaussianBlur(blur_radius))
 
+                #濾鏡功能
+                st.sidebar.header("濾鏡")
+                filter_options = {
+                    "原始": None,
+                    "模糊濾鏡": ImageFilter.BLUR,
+                    "鉛筆濾鏡": ImageFilter.CONTOUR,
+                    "凸顯細節濾鏡": ImageFilter.DETAIL,
+                    "凸顯邊緣濾鏡": ImageFilter.EDGE_ENHANCE,
+                    "浮雕濾鏡": ImageFilter.EMBOSS,
+                    "只保留濾鏡": ImageFilter.FIND_EDGES,
+                    "銳化濾鏡": ImageFilter.SHARPEN,
+                    "平滑濾鏡": ImageFilter.SMOOTH,
+                }
+                selected_filter = st.sidebar.selectbox("濾鏡選擇", list(filter_options.keys()), key="selected_filter")
+                if selected_filter != "原始":
+                    image = image.filter(filter_options[selected_filter])
+
+                st.session_state.processed_image = image
+
                 # 調整功能
                 st.sidebar.header("調整功能")
                 color_mode = st.sidebar.selectbox("色調模式", ["原始", "紅色調", "藍色調", "黑白色調"], key="color_mode")
