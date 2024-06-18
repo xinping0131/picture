@@ -5,7 +5,7 @@ import base64
 
 # 模擬用戶資料庫
 user_db = {"app": "123"}  # 預設一個用戶名和密碼
-session_limit = 10  # 非訂閱用戶的使用限制次數
+session_limit = 3  # 非訂閱用戶的使用限制次數
 
 # 設置頁面配置
 st.set_page_config(page_title="Picture Magic House!", page_icon="✨", initial_sidebar_state="collapsed")
@@ -75,7 +75,7 @@ def login():
 def main():
     st.sidebar.title("用戶狀態")
     if st.session_state.logged_in:
-        st.sidebar.write(f"Welcome , {st.session_state.username}~")
+        st.sidebar.write(f"歡迎, {st.session_state.username}~")
 
         subscription_status = st.sidebar.selectbox(
             "訂閱狀況",
@@ -87,7 +87,7 @@ def main():
             st.sidebar.write("訂閱用戶可無限次使用本系統~")
             st.session_state.subscribed = True
         else:
-            st.sidebar.write(f"非訂閱用戶只能使用 {session_limit} 次圖片調整功能喔。")
+            st.sidebar.write(f"非訂閱用戶只能上傳 {session_limit} 次圖片進行使用喔。")
             st.session_state.subscribed = False
 
         st.title("Picture Magic House!🎩")
@@ -112,7 +112,7 @@ def main():
 
             if st.session_state.subscribed or st.session_state.usage_count < session_limit:
                 # 裁切功能
-                st.sidebar.markdown('<span style="font-size: 35px; font-weight: bold; color: purple;">📌Tools</span>', unsafe_allow_html=True)
+                st.sidebar.markdown('<span style="font-size: 35px; font-weight: bold; color: purple;">📌工具</span>', unsafe_allow_html=True)
                 st.sidebar.header("裁切功能")
 
                 crop_left = st.sidebar.slider("左邊", 0, image.width, 0, key="crop_left")
@@ -120,7 +120,7 @@ def main():
                 crop_top = st.sidebar.slider("上方", 0, image.height, 0, key="crop_top")
                 crop_bottom = st.sidebar.slider("下方", 0, image.height, image.height, key="crop_bottom")
 
-                # 確保裁切座標是有效的
+                # 確保裁剪座標是有效的
                 crop_left, crop_right = min(crop_left, crop_right), max(crop_left, crop_right)
                 crop_top, crop_bottom = min(crop_top, crop_bottom), max(crop_top, crop_bottom)
 
@@ -157,6 +157,8 @@ def main():
                 enhancer = ImageEnhance.Contrast(image)
                 image = enhancer.enhance(contrast)
 
+                st.session_state.processed_image = image
+
                 # 分割線
                 st.markdown('<div class="divider"></div>', unsafe_allow_html=True)
 
@@ -173,7 +175,7 @@ def main():
             # 下載處理後的圖片
             st.sidebar.header("下載圖片")
             img_buffer = io.BytesIO()
-            image.save(img_buffer, format="PNG")
+            st.session_state.processed_image.save(img_buffer, format="PNG")
             img_buffer.seek(0)
             st.sidebar.download_button(
                 label="下載圖片",
@@ -181,9 +183,21 @@ def main():
                 file_name="processed_image.png",
                 mime="image/png"
             )
+
         else:
             if not st.session_state.subscribed and st.session_state.usage_count >= session_limit:
                 st.error("您已達到非訂閱用戶的使用限制次數，請訂閱以繼續使用，謝謝。")
+                if 'processed_image' in st.session_state:
+                    # 顯示最後處理的圖片
+                    image = st.session_state.processed_image
+                    st.markdown(
+                        f"""
+                        <div class="image-container">
+                            <div class="image-title">最後修改後的圖片~</div>
+                            <img src="data:image/png;base64,{image_to_base64(image)}" alt="最後修改後的圖片~">
+                        </div>
+                        """, unsafe_allow_html=True
+                    )
 
     else:
         st.title("Welcome To Picture Magic House!")
