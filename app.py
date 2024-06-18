@@ -87,7 +87,7 @@ def main():
             st.sidebar.write("訂閱用戶可無限次使用本系統~")
             st.session_state.subscribed = True
         else:
-            st.sidebar.write(f"非訂閱用戶只能上傳 {session_limit} 次圖片進行使用喔。")
+            st.sidebar.write(f"非訂閱用戶只能使用 {session_limit} 次圖片調整功能喔。")
             st.session_state.subscribed = False
 
         st.title("Picture Magic House!🎩")
