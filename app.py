@@ -5,7 +5,7 @@ import base64
 
 # 模擬用戶資料庫
 user_db = {"app": "123"}  # 預設一個用戶名和密碼
-session_limit = 3  # 非訂閱用戶的使用限制次數
+session_limit = 10  # 非訂閱用戶的使用限制次數
 
 # 設置頁面配置
 st.set_page_config(page_title="Picture Magic House!", page_icon="✨", initial_sidebar_state="collapsed")
