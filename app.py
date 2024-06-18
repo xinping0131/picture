@@ -126,10 +126,13 @@ def main():
 
                 image = image.crop((crop_left, crop_top, crop_right, crop_bottom))
 
-                 # 旋轉功能
-                st.sidebar.header("旋轉功能")
-                rotate_angle = st.sidebar.slider("旋轉角度", -180, 180, 0, key="rotate_angle")
-                image = image.rotate(rotate_angle, expand=True)
+               # 鏡像翻轉功能
+                st.sidebar.header("鏡像翻轉功能")
+                flip_option = st.sidebar.radio("選擇翻轉方向", ["水平翻轉", "垂直翻轉"], index=0, key="flip_option")
+                if flip_option == "水平翻轉":
+                    image = image.transpose(Image.FLIP_LEFT_RIGHT)
+                elif flip_option == "垂直翻轉":
+                    image = image.transpose(Image.FLIP_TOP_BOTTOM)
 
                 # 模糊功能
                 st.sidebar.header("模糊功能")
