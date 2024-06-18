@@ -178,7 +178,7 @@ def main():
             st.session_state.processed_image.save(img_buffer, format="PNG")
             img_buffer.seek(0)
             st.sidebar.download_button(
-                label="下載圖片",
+                label="Download...",
                 data=img_buffer,
                 file_name="processed_image.png",
                 mime="image/png"
