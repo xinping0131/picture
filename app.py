@@ -5,7 +5,7 @@ import base64
 
 # 模擬用戶資料庫
 user_db = {"app": "123"}  # 預設一個用戶名和密碼
-session_limit = 3  # 非訂閱用戶的使用限制次數
+session_limit = 10  # 非訂閱用戶的使用限制次數
 
 # 設置頁面配置
 st.set_page_config(page_title="Picture Magic House!", page_icon="✨", initial_sidebar_state="collapsed")
@@ -75,7 +75,7 @@ def login():
 def main():
     st.sidebar.title("用戶狀態")
     if st.session_state.logged_in:
-        st.sidebar.write(f"歡迎, {st.session_state.username}~")
+        st.sidebar.write(f"Welcome , {st.session_state.username}~")
 
         subscription_status = st.sidebar.selectbox(
             "訂閱狀況",
@@ -112,7 +112,7 @@ def main():
 
             if st.session_state.subscribed or st.session_state.usage_count < session_limit:
                 # 裁切功能
-                st.sidebar.markdown('<span style="font-size: 35px; font-weight: bold; color: purple;">📌工具</span>', unsafe_allow_html=True)
+                st.sidebar.markdown('<span style="font-size: 35px; font-weight: bold; color: purple;">📌Tools</span>', unsafe_allow_html=True)
                 st.sidebar.header("裁切功能")
 
                 crop_left = st.sidebar.slider("左邊", 0, image.width, 0, key="crop_left")
@@ -120,7 +120,7 @@ def main():
                 crop_top = st.sidebar.slider("上方", 0, image.height, 0, key="crop_top")
                 crop_bottom = st.sidebar.slider("下方", 0, image.height, image.height, key="crop_bottom")
 
-                # 確保裁剪座標是有效的
+                # 確保裁切座標是有效的
                 crop_left, crop_right = min(crop_left, crop_right), max(crop_left, crop_right)
                 crop_top, crop_bottom = min(crop_top, crop_bottom), max(crop_top, crop_bottom)
 
