@@ -200,6 +200,7 @@ def main():
                     </div>
                     """, unsafe_allow_html=True
                 )
+                
 
             # 下載處理後的圖片
             st.sidebar.header("下載圖片")
@@ -216,16 +217,16 @@ def main():
         else:
             if not st.session_state.subscribed and st.session_state.usage_count >= session_limit:
                 st.error("您已達到非訂閱用戶的使用限制次數，請訂閱以繼續使用，謝謝。")
-                if 'processed_image' in st.session_state:
+                
                     # 顯示最後處理的圖片
-                    image = st.session_state.processed_image
-                    st.markdown(
-                        f"""
-                        <div class="image-container">
-                            <div class="image-title">最後修改後的圖片~</div>
-                            <img src="data:image/png;base64,{image_to_base64(image)}" alt="最後修改後的圖片~">
-                        </div>
-                        """, unsafe_allow_html=True
+                image = st.session_state.processed_image
+                st.markdown(
+                    f"""
+                    <div class="image-container">
+                        <div class="image-title">最後修改後的圖片~</div>
+                        <img src="data:image/png;base64,{image_to_base64(image)}" alt="最後修改後的圖片~">
+                    </div>
+                    """, unsafe_allow_html=True
                     )
 
     else:
